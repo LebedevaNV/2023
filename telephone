@@ -1,1 +1,55 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
 
+using namespace std;
+
+struct Record {
+    int telephone;
+    string name;
+    string address;
+};
+
+bool compareRecords(const Record& r1, const Record& r2) {
+    return r1.telephone < r2.telephone;
+}
+
+int main() {
+    string filename = "records.txt"; // имя файла с записями
+    ifstream file(filename); // открываем файл для чтения
+
+    if (!file.is_open()) { // проверяем, удалось ли открыть файл
+        cout << "Error: cannot open file " << filename << endl;
+        return 1;
+    }
+
+    vector<Record> records; // вектор для хранения записей
+
+    int telephone;
+    string name, address;
+    while (file >> telephone >> name >> address) { // читаем файл построчно
+        Record record = {telephone, name, address};
+        records.push_back(record); // добавляем запись в вектор
+    }
+
+    file.close(); // закрываем файл
+
+    sort(records.begin(), records.end(), compareRecords); // сортируем записи по порядковому номеру
+
+    ofstream outfile("sorted_records.txt"); // открываем файл для записи результата
+    if (!outfile.is_open()) { // проверяем, удалось ли открыть файл
+        cout << "Error: cannot create file sorted_records.txt" << endl;
+        return 1;
+    }
+
+    for (const auto& record : records) { // записываем отсортированные записи в файл
+        outfile << record.telephone << " " << record.name << " " << record.address << endl;
+    }
+
+    outfile.close(); // закрываем файл
+
+    cout << "The records in file " << filename << " have been sorted and saved to sorted_records.txt." << endl; // выводим результат на экран
+
+    return 0;
+}
