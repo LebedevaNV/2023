@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int passengers, lastBusSeats;
+    cin >> passengers;
+    lastBusSeats = passengers % 50;
+    if (lastBusSeats == 0) {
+        cout << "50" << endl;
+    } else {
+        cout << 50 - lastBusSeats << endl;
+    }
+    return 0;
+}
