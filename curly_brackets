@@ -1,1 +1,51 @@
+#include <iostream>
+#include <fstream>
+#include <stack>
 
+using namespace std;
+
+int main() {
+    string filename = "program.c"; // имя файла с программой
+    ifstream file(filename); // открываем файл для чтения
+
+    if (!file.isopen()) { // проверяем, удалось ли открыть файл
+        cout << "Error: cannot open file " << filename << endl;
+        return 1;
+    }
+
+    stack<char> brackets; // стек для хранения открывающихся скобок
+
+    char c;
+    while (file.get(c)) { // читаем файл посимвольно
+        if (c == '{') {
+            brackets.push(c); // если встретили открывающую скобку, добавляем ее в стек
+        } else if (c == '}') {
+            if (brackets.empty()) { // если стек пуст, значит нет соответствующей открывающей скобки
+                cout << "Error: unmatched closing bracket '}'" << endl;
+                return 1;
+            } else {
+                brackets.pop(); // если есть соответствующая открывающая скобка, удаляем ее из стека
+            }
+        }
+    }
+
+    file.close(); // закрываем файл
+
+    if (!brackets.empty()) { // если в стеке остались необработанные открывающие скобки, значит программа некорректна
+        cout << "Error: unmatched opening bracket '{'" << endl;
+        return 1;
+    }
+
+    ofstream outfile("out.txt"); // открываем файл для записи результата
+    if (!outfile.isopen()) { // проверяем, удалось ли открыть файл
+        cout << "Error: cannot create file out.txt" << endl;
+        return 1;
+    }
+
+    outfile << "The program " << filename << " is correct." << endl; // записываем результат в файл
+    cout << "The program " << filename << " is correct." << endl; // выводим результат на экран
+
+    outfile.close(); // закрываем файл
+
+    return 0;
+}
