@@ -1,0 +1,80 @@
+#include <iostream>
+using namespace std;
+
+class Queue {
+private:
+    int size;
+    int* queue;
+    int front;
+    int rear;
+public:
+    Queue(int s) {
+        size = s;
+        queue = new int[size];
+        front = -1;
+        rear = -1;
+    }
+    ~Queue() {
+        delete[] queue;
+    }
+
+    void add(int data) {
+        if (rear == size - 1)
+            cout << "Queue is full\n";
+        else {
+            if (front == -1)
+                front = 0;
+            rear++;
+            queue[rear] = data;
+            cout << data << " added to the queue\n";
+        }
+    }
+
+    void remove() {
+        if (front == -1)
+            cout << "Queue is empty\n";
+        else {
+            cout << queue[front] << " removed from the queue\n";
+            front++;
+            if (front > rear)
+                front = rear = -1;
+        }
+    }
+
+    void print() {
+        if (front == -1)
+            cout << "Queue is empty\n";
+        else {
+            cout << "Queue: ";
+            for (int i = front; i <= rear; i++)
+                cout << queue[i] << " ";
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    Queue q(5);
+
+    q.add(10);
+    q.add(20);
+    q.add(30);
+    q.print();
+
+    q.remove();
+    q.print();
+
+    q.add(40);
+    q.add(50);
+    q.print();
+
+    q.remove();
+    q.remove();
+    q.print();
+
+    q.remove();
+    q.remove();
+    q.print();
+
+    return 0;
+}
