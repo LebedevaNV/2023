@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    const int ticketPrice = 10; // стоимость билета
+    int ages[5]; // возраст 5 человек
+    int minAge = 100; // минимальный возраст
+
+    // ввод возраста 5 человек
+    for (int i = 0; i < 5; i++) {
+        cin >> ages[i];
+        if (ages[i] < minAge) {
+            minAge = ages[i]; // находим минимальный возраст
+        }
+    }
+
+    // расчет стоимости билетов с учетом скидки
+    int totalCost = 0;
+    for (int i = 0; i < 5; i++) {
+        if (ages[i] == minAge) {
+            totalCost += ticketPrice / 2; // скидка 50%
+        } else {
+            totalCost += ticketPrice;
+        }
+    }
+
+    cout << "Total cost: " << totalCost << endl;
+
+    return 0;
+}
